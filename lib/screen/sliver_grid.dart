@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import '../model/movie.dart';
-import '../witgets/movie_card.dart';
+import '../widgets/movie_card.dart';
 
 class MovieSliverGrid extends StatelessWidget {
   final List<Movie> movies;
@@ -16,21 +16,34 @@ class MovieSliverGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    int crossAxisCount = 4;
-    if (screenWidth < 600) {
+    
+    // Refined breakpoints for ultra-wide, desktop, tablet, and mobile
+    int crossAxisCount;
+    double aspectRatio;
+    
+    if (screenWidth < 500) {
       crossAxisCount = 2;
+      aspectRatio = 0.65;
     } else if (screenWidth < 900) {
       crossAxisCount = 3;
+      aspectRatio = 0.68;
+    } else if (screenWidth < 1200) {
+      crossAxisCount = 4;
+      aspectRatio = 0.70;
+    } else {
+      crossAxisCount = 5;
+      aspectRatio = 0.70;
     }
 
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
       sliver: SliverGrid(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             final movie = movies[index];
             return FadeInUp(
-              duration: Duration(milliseconds: 300 + (index * 60)),
+              duration: const Duration(milliseconds: 400),
+              delay: Duration(milliseconds: index * 50),
               child: MovieCard(
                 movie: movie,
                 autofocus: index == 0,
@@ -42,9 +55,9 @@ class MovieSliverGrid extends StatelessWidget {
         ),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: crossAxisCount,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 0.72,
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
+          childAspectRatio: aspectRatio,
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../model/movie.dart';
 import '../services/movie_service.dart';
 import '../app_theme.dart';
@@ -38,13 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
           MovieSliverGrid(
             movies: _movies,
             onMovieSelect: (movie) {
-              ScaffoldMessenger.of(context).clearSnackBars();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Reproduciendo: ${movie.title}'),
-                  duration: const Duration(seconds: 2),
-                ),
-              );
+              context.push('/detail', extra: movie);
             },
           ),
           const SliverToBoxAdapter(

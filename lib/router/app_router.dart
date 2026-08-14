@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../screen/home_screen.dart';
-
+import '../screen/detail_screen.dart';
+import '../model/movie.dart';
 class AppRoutes {
   static const String home = '/';
 }
@@ -15,6 +16,22 @@ final GoRouter appRouter = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const HomeScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: CurveTween(curve: Curves.easeInOutCirc).animate(animation),
+              child: child,
+            );
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/detail',
+      pageBuilder: (context, state) {
+        final movie = state.extra as Movie;
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: DetailScreen(movie: movie),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: CurveTween(curve: Curves.easeInOutCirc).animate(animation),
